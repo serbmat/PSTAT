@@ -9,8 +9,8 @@ VARYG_SUFFIX_RE = re.compile(r'-\s*(VARYG)\b', re.IGNORECASE)
 
 _HASHTAG_RE = re.compile(r'(?<!\w)#([^\s#]+)')
 _TG_MESSAGE_LINK_RE = re.compile(
-    r'Онлайн\s+в\s+телеграм[іi]\s*:\s*(?:https?://)?(t\.me/[A-Za-z0-9_]+/\d+)',
-    re.IGNORECASE,
+    r'Онлайн\s+в\s+телеграм(?:і|i)?\s*:\s*.*?(https?://t\.me/[A-Za-z0-9_]+/\d+)',
+    re.IGNORECASE | re.MULTILINE,
 )
 _EPISODE_RE = re.compile(
     r'(?:(\d+)\s*сезон\s*)?\[(\d{1,2})\s*з\s*(?:\d+|[XХxх]{1,2})\]',

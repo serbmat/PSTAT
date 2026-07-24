@@ -95,15 +95,15 @@
       "title": "KAIJU GIRL CARAMELISE",
       "normalized_title": "kaijugirlcaramelise",
       "preference": "dub",
-      "last_downloaded_episode": "S01E01",
-      "last_download_time": "2026-07-16T17:59:19.9483042Z"
+      "last_downloaded_episode": "S01E02",
+      "last_download_time": "2026-07-23T23:33:00.0472367Z"
     },
     {
       "title": "The Exiled Heavy Knight Knows How to Game the System",
       "normalized_title": "theexiledheavyknightknowshowtogamethesystem",
       "preference": "dub",
-      "last_downloaded_episode": "S01E01",
-      "last_download_time": "2026-07-16T19:24:52.7845962Z"
+      "last_downloaded_episode": "S01E02",
+      "last_download_time": "2026-07-23T23:35:30.3474252Z"
     },
     {
       "title": "Though I Am an Inept Villainess",
@@ -124,7 +124,7 @@
       "normalized_title": "tombraiderking",
       "preference": "dub",
       "last_downloaded_episode": "S01E01",
-      "last_download_time": "2026-07-22T17:51:35.6354856Z"
+      "last_download_time": "2026-07-22T20:51:40+03:00"
     },
     {
       "title": "Chainsmoker Cat",
@@ -152,7 +152,21 @@
       "normalized_title": "buchigirereijouwahoufukuwochikaimashitamadoushonochikaradesokokuwotatakitsubushimasu",
       "preference": "mvo",
       "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-23T21:58:49+03:00"
+      "last_download_time": "2026-07-24T09:49:18+03:00"
+    },
+    {
+      "title": "Селянин 999 рівня",
+      "normalized_title": "level999nomurabito",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E04",
+      "last_download_time": "2026-07-23T21:10:30+03:00"
+    },
+    {
+      "title": "Провалений мудрець підкорює академію після другого переродження: хроніки мага S-рангу з читами",
+      "normalized_title": "rakudaikenjanogakuinmusou",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E05",
+      "last_download_time": "2026-07-24T09:38:55+03:00"
     }
   ],
   "discovered_shows": []
