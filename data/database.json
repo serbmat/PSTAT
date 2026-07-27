@@ -4,29 +4,29 @@
       "title": "Akane-banashi",
       "normalized_title": "akanebanashi",
       "preference": "dub",
-      "last_downloaded_episode": "S01E11",
-      "last_download_time": "2026-07-20T12:13:58.5643426Z"
+      "last_downloaded_episode": "S01E12",
+      "last_download_time": "2026-07-25T16:17:37.1747128Z"
     },
     {
       "title": "Ascendance of a Bookworm",
       "normalized_title": "ascendanceofabookworm",
       "preference": "dub",
-      "last_downloaded_episode": "S01E48",
-      "last_download_time": "2026-07-11T09:49:37.6749939Z"
+      "last_downloaded_episode": "S01E49",
+      "last_download_time": "2026-07-25T09:47:22.3415593Z"
     },
     {
       "title": "Daemons of the Shadow Realm",
       "normalized_title": "daemonsoftheshadowrealm",
       "preference": "dub",
-      "last_downloaded_episode": "S01E13",
-      "last_download_time": "2026-07-20T12:11:00.7534519Z"
+      "last_downloaded_episode": "S01E14",
+      "last_download_time": "2026-07-25T16:17:38.4080044Z"
     },
     {
       "title": "That Time I Got Reincarnated as a Slime",
       "normalized_title": "thattimeigotreincarnatedasaslime",
       "preference": "dub",
-      "last_downloaded_episode": "S04E13",
-      "last_download_time": "2026-07-17T15:21:17.9178045Z"
+      "last_downloaded_episode": "S04E14",
+      "last_download_time": "2026-07-24T15:18:39.6307574Z"
     },
     {
       "title": "The Most Heretical Last Boss Queen: From Villainess to Savior",
@@ -39,8 +39,8 @@
       "title": "Sparks of Tomorrow",
       "normalized_title": "sparksoftomorrow",
       "preference": "dub",
-      "last_downloaded_episode": "S01E02",
-      "last_download_time": "2026-07-12T14:17:39.5633613Z"
+      "last_downloaded_episode": "S01E04",
+      "last_download_time": "2026-07-26T14:10:27.8148917Z"
     },
     {
       "title": "THE GHOST IN THE SHELL",
@@ -74,15 +74,15 @@
       "title": "BLACK TORCH",
       "normalized_title": "blacktorch",
       "preference": "dub",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-20T12:16:58.9432012Z"
+      "last_downloaded_episode": "S01E04",
+      "last_download_time": "2026-07-25T13:17:31.3210009Z"
     },
     {
       "title": "Hanaori-san Still Wants to Fight in the Next Life",
       "normalized_title": "hanaorisanstillwantstofightinthenextlife",
       "preference": "dub",
-      "last_downloaded_episode": "S01E02",
-      "last_download_time": "2026-07-20T12:11:06.3805195Z"
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-25T17:50:11.3405587Z"
     },
     {
       "title": "Skeleton Knight in Another World",
@@ -155,18 +155,88 @@
       "last_download_time": "2026-07-24T09:49:18+03:00"
     },
     {
-      "title": "Селянин 999 рівня",
-      "normalized_title": "level999nomurabito",
-      "preference": "mvo",
-      "last_downloaded_episode": "S01E04",
-      "last_download_time": "2026-07-23T21:10:30+03:00"
-    },
-    {
       "title": "Провалений мудрець підкорює академію після другого переродження: хроніки мага S-рангу з читами",
       "normalized_title": "rakudaikenjanogakuinmusou",
       "preference": "mvo",
       "last_downloaded_episode": "S01E05",
       "last_download_time": "2026-07-24T09:38:55+03:00"
+    },
+    {
+      "title": "Хочу кохати тебе до самої смерті",
+      "normalized_title": "kimigashinumadekoiwoshitaii",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-21T20:03:41+03:00"
+    },
+    {
+      "title": "Таємна боротьба за трон найсильнішого принца-нікчеми",
+      "normalized_title": "saikyoudegarashioujinoanyakuteiiarasoi",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-20T23:32:41+03:00"
+    },
+    {
+      "title": "Піклування про талановиту дівчину: У елітній школі, повній недосяжних красунь, мені випало таємно доглядати за першою панянкою (з нульовими побутовими навичками)",
+      "normalized_title": "saijonoosewa",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-19T22:16:43+03:00"
+    },
+    {
+      "title": "Я сказав: “Залиште це мені, а самі йдіть” — і через 10 років став легендою",
+      "normalized_title": "kokowaorenimakasetesakiniiketoittekara10nengatattaradensetsuninatteita",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-19T15:04:25+03:00"
+    },
+    {
+      "title": "Володар прикордоння: старт із нулем підданих",
+      "normalized_title": "ryoumi0ninstartnohenkyouryoushusama",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E04",
+      "last_download_time": "2026-07-24T22:47:24+03:00"
+    },
+    {
+      "title": "Jaadugar: A Witch in Mongolia",
+      "normalized_title": "jaadugarawitchinmongolia",
+      "preference": "dub",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-25T16:26:07.12493Z"
+    },
+    {
+      "title": "Незриме кохання під безхмарним нічним небом",
+      "normalized_title": "toumeinayorunikakerukimitomenimienaikoiwoshita",
+      "preference": "inari",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-22T21:30:07.12493Z"
+    },
+    {
+      "title": "Небо на берегах червоної річки",
+      "normalized_title": "redriver",
+      "preference": "glass moon",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-21T00:22:07.12493Z"
+    },
+    {
+      "title": "You and I Are Polar Opposites",
+      "normalized_title": "youandiarepolaropposites",
+      "preference": "dub",
+      "last_downloaded_episode": "S02E02",
+      "last_download_time": "2026-07-26T08:50:17.3260272Z"
+    },
+    {
+      "title": "Селянин 999 рівня",
+      "normalized_title": "level999nomurabito",
+      "preference": "mvo",
+      "last_downloaded_episode": "S01E05",
+      "last_download_time": "2026-07-26T12:55:56+03:00"
+    },
+    {
+      "title": "Mushoku Tensei: Jobless Reincarnation",
+      "normalized_title": "mushokutenseijoblessreincarnation",
+      "preference": "dub",
+      "last_downloaded_episode": "S03E03",
+      "last_download_time": "2026-07-26T15:20:31.5176296Z"
     }
   ],
   "discovered_shows": []
