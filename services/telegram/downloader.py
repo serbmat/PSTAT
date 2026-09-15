@@ -8,7 +8,7 @@ _TG_TOPIC_LINK_RE = re.compile(r"https?://t\.me/([A-Za-z0-9_]+)/(\d+)(?:/(\d+))?
 
 
 class TelegramDownloader:
-    def __init__(self, download_dir: str = r"D:\Downloads\mmmmmmm"):
+    def __init__(self, download_dir: str = "/mnt/HDDxD/Downloads/mmmmmmm"):
         self.download_dir = Path(download_dir)
         self.download_dir.mkdir(parents=True, exist_ok=True)
 

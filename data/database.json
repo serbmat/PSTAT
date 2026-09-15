@@ -1,207 +1,186 @@
 {
   "shows": [
     {
-      "title": "Akane-banashi",
-      "normalized_title": "akanebanashi",
-      "preference": "dub",
-      "last_downloaded_episode": "S01E12",
-      "last_download_time": "2026-07-25T16:17:37.1747128Z"
-    },
-    {
       "title": "Ascendance of a Bookworm",
       "normalized_title": "ascendanceofabookworm",
       "preference": "dub",
-      "last_downloaded_episode": "S01E49",
-      "last_download_time": "2026-07-25T09:47:22.3415593Z"
+      "last_downloaded_episode": "S01E55",
+      "last_download_time": "2026-09-05T12:51:56.460142+03:00"
     },
     {
       "title": "Daemons of the Shadow Realm",
       "normalized_title": "daemonsoftheshadowrealm",
       "preference": "dub",
-      "last_downloaded_episode": "S01E14",
-      "last_download_time": "2026-07-25T16:17:38.4080044Z"
+      "last_downloaded_episode": "S01E21",
+      "last_download_time": "2026-09-12T19:18:26.546397+03:00"
     },
     {
       "title": "That Time I Got Reincarnated as a Slime",
       "normalized_title": "thattimeigotreincarnatedasaslime",
       "preference": "dub",
-      "last_downloaded_episode": "S04E14",
-      "last_download_time": "2026-07-24T15:18:39.6307574Z"
+      "last_downloaded_episode": "S04E20",
+      "last_download_time": "2026-09-11T18:14:56.838269+03:00"
     },
     {
       "title": "The Most Heretical Last Boss Queen: From Villainess to Savior",
       "normalized_title": "themosthereticallastbossqueenfromvillainesstosavior",
       "preference": "dub",
-      "last_downloaded_episode": "S02E10",
-      "last_download_time": "2026-07-22T17:26:34.8885274Z"
+      "last_downloaded_episode": "S02E12",
+      "last_download_time": "2026-08-05T20:18:26.645634+03:00"
     },
     {
       "title": "Sparks of Tomorrow",
       "normalized_title": "sparksoftomorrow",
       "preference": "dub",
-      "last_downloaded_episode": "S01E04",
-      "last_download_time": "2026-07-26T14:10:27.8148917Z"
+      "last_downloaded_episode": "S01E11",
+      "last_download_time": "2026-09-13T17:09:40.359831+03:00"
     },
     {
       "title": "THE GHOST IN THE SHELL",
       "normalized_title": "theghostintheshell",
       "preference": "dub",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-21T14:42:00.9062335Z"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-08T18:47:02.536291+03:00"
     },
     {
       "title": "Clevatess",
       "normalized_title": "clevatess",
       "preference": "dub",
-      "last_downloaded_episode": "S02E02",
-      "last_download_time": "2026-07-14T13:07:46.0364542Z"
+      "last_downloaded_episode": "S02E10",
+      "last_download_time": "2026-09-09T15:16:57.142633+03:00"
     },
     {
       "title": "From Old Country Bumpkin to Master Swordsman",
       "normalized_title": "fromoldcountrybumpkintomasterswordsman",
       "preference": "dub",
-      "last_downloaded_episode": "S02E03",
-      "last_download_time": "2026-07-22T15:31:00.5753775Z"
+      "last_downloaded_episode": "S02E10",
+      "last_download_time": "2026-09-09T18:35:01.209146+03:00"
     },
     {
       "title": "Smoking Behind the Supermarket with You",
       "normalized_title": "smokingbehindthesupermarketwithyou",
       "preference": "dub",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-23T15:46:12.2837436Z"
-    },
-    {
-      "title": "BLACK TORCH",
-      "normalized_title": "blacktorch",
-      "preference": "dub",
-      "last_downloaded_episode": "S01E04",
-      "last_download_time": "2026-07-25T13:17:31.3210009Z"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-10T18:52:24.623291+03:00"
     },
     {
       "title": "Hanaori-san Still Wants to Fight in the Next Life",
       "normalized_title": "hanaorisanstillwantstofightinthenextlife",
       "preference": "dub",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-25T17:50:11.3405587Z"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-12T20:40:58.416133+03:00"
     },
     {
       "title": "Skeleton Knight in Another World",
       "normalized_title": "skeletonknightinanotherworld",
       "preference": "dub",
-      "last_downloaded_episode": "S02E03",
-      "last_download_time": "2026-07-20T13:18:31.7975576Z"
+      "last_downloaded_episode": "S02E11",
+      "last_download_time": "2026-09-14T16:14:12.534835+03:00"
     },
     {
       "title": "KAIJU GIRL CARAMELISE",
       "normalized_title": "kaijugirlcaramelise",
       "preference": "dub",
-      "last_downloaded_episode": "S01E02",
-      "last_download_time": "2026-07-23T23:33:00.0472367Z"
+      "last_downloaded_episode": "S01E09",
+      "last_download_time": "2026-09-10T20:52:28.904535+03:00"
     },
     {
       "title": "The Exiled Heavy Knight Knows How to Game the System",
       "normalized_title": "theexiledheavyknightknowshowtogamethesystem",
       "preference": "dub",
-      "last_downloaded_episode": "S01E02",
-      "last_download_time": "2026-07-23T23:35:30.3474252Z"
+      "last_downloaded_episode": "S01E09",
+      "last_download_time": "2026-09-10T19:17:56.712985+03:00"
     },
     {
       "title": "Though I Am an Inept Villainess",
       "normalized_title": "thoughiamanineptvillainess",
       "preference": "dub",
-      "last_downloaded_episode": "S01E01",
-      "last_download_time": "2026-07-21T15:35:32.6006727Z"
+      "last_downloaded_episode": "S01E08",
+      "last_download_time": "2026-09-10T22:05:59.008280+03:00"
     },
     {
       "title": "Trapped in a Dating Sim: The World of Otome Games Is Tough for Mobs",
       "normalized_title": "trappedinadatingsimtheworldofotomegamesistoughformobs",
       "preference": "dub",
-      "last_downloaded_episode": "S02E01",
-      "last_download_time": "2026-07-22T15:45:01.5826852Z"
+      "last_downloaded_episode": "S02E08",
+      "last_download_time": "2026-09-09T18:47:01.345056+03:00"
     },
     {
       "title": "Tomb Raider King",
       "normalized_title": "tombraiderking",
       "preference": "dub",
-      "last_downloaded_episode": "S01E01",
-      "last_download_time": "2026-07-22T20:51:40+03:00"
+      "last_downloaded_episode": "S01E08",
+      "last_download_time": "2026-09-09T20:39:34.360455+03:00"
     },
     {
       "title": "Chainsmoker Cat",
       "normalized_title": "chainsmokercat",
       "preference": "dub",
-      "last_downloaded_episode": "S01E02",
-      "last_download_time": "2026-07-23T16:17:13.0672356Z"
-    },
-    {
-      "title": "Найсильніший у світі арєргард",
-      "normalized_title": "sekaisaikyounokouei",
-      "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-21T17:51:41+03:00"
+      "last_downloaded_episode": "S01E08",
+      "last_download_time": "2026-09-03T19:16:33.367288+03:00"
     },
     {
       "title": "Красуня з нової школи виявилася моєю подругою дитинства, яку я колись вважав хлопцем",
       "normalized_title": "tenkousakinoseisokarennabishoujogamukashidanshitoomotteisshoniasondaosananajimidattaken",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-22T17:14:21+03:00"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-10T18:22:09+03:00"
     },
     {
       "title": "Розлючена панночка присягнула помститися Я розтрощу батьківщину силою магічної книги",
       "normalized_title": "buchigirereijouwahoufukuwochikaimashitamadoushonochikaradesokokuwotatakitsubushimasu",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-24T09:49:18+03:00"
+      "last_downloaded_episode": "S01E09",
+      "last_download_time": "2026-09-04T21:33:07+03:00"
     },
     {
       "title": "Провалений мудрець підкорює академію після другого переродження: хроніки мага S-рангу з читами",
       "normalized_title": "rakudaikenjanogakuinmusou",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E05",
-      "last_download_time": "2026-07-24T09:38:55+03:00"
+      "last_downloaded_episode": "S01E12",
+      "last_download_time": "2026-09-11T17:46:34+03:00"
     },
     {
       "title": "Хочу кохати тебе до самої смерті",
       "normalized_title": "kimigashinumadekoiwoshitaii",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-21T20:03:41+03:00"
+      "last_downloaded_episode": "S01E09",
+      "last_download_time": "2026-09-03T16:21:11+03:00"
     },
     {
       "title": "Таємна боротьба за трон найсильнішого принца-нікчеми",
       "normalized_title": "saikyoudegarashioujinoanyakuteiiarasoi",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-20T23:32:41+03:00"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-10T18:22:09+03:00"
     },
     {
       "title": "Піклування про талановиту дівчину: У елітній школі, повній недосяжних красунь, мені випало таємно доглядати за першою панянкою (з нульовими побутовими навичками)",
       "normalized_title": "saijonoosewa",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-19T22:16:43+03:00"
+      "last_downloaded_episode": "S01E11",
+      "last_download_time": "2026-09-14T00:14:44+03:00"
     },
     {
       "title": "Я сказав: “Залиште це мені, а самі йдіть” — і через 10 років став легендою",
       "normalized_title": "kokowaorenimakasetesakiniiketoittekara10nengatattaradensetsuninatteita",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-19T15:04:25+03:00"
+      "last_downloaded_episode": "S01E11",
+      "last_download_time": "2026-09-14T01:01:43+03:00"
     },
     {
       "title": "Володар прикордоння: старт із нулем підданих",
       "normalized_title": "ryoumi0ninstartnohenkyouryoushusama",
       "preference": "mvo",
-      "last_downloaded_episode": "S01E04",
-      "last_download_time": "2026-07-24T22:47:24+03:00"
+      "last_downloaded_episode": "S01E11",
+      "last_download_time": "2026-09-12T01:33:15+03:00"
     },
     {
       "title": "Jaadugar: A Witch in Mongolia",
       "normalized_title": "jaadugarawitchinmongolia",
       "preference": "dub",
-      "last_downloaded_episode": "S01E03",
-      "last_download_time": "2026-07-25T16:26:07.12493Z"
+      "last_downloaded_episode": "S01E10",
+      "last_download_time": "2026-09-12T19:16:56.178642+03:00"
     },
     {
       "title": "Незриме кохання під безхмарним нічним небом",
@@ -221,23 +200,134 @@
       "title": "You and I Are Polar Opposites",
       "normalized_title": "youandiarepolaropposites",
       "preference": "dub",
-      "last_downloaded_episode": "S02E02",
-      "last_download_time": "2026-07-26T08:50:17.3260272Z"
-    },
-    {
-      "title": "Селянин 999 рівня",
-      "normalized_title": "level999nomurabito",
-      "preference": "mvo",
-      "last_downloaded_episode": "S01E05",
-      "last_download_time": "2026-07-26T12:55:56+03:00"
+      "last_downloaded_episode": "S02E09",
+      "last_download_time": "2026-09-13T11:42:45.482069+03:00"
     },
     {
       "title": "Mushoku Tensei: Jobless Reincarnation",
       "normalized_title": "mushokutenseijoblessreincarnation",
       "preference": "dub",
-      "last_downloaded_episode": "S03E03",
-      "last_download_time": "2026-07-26T15:20:31.5176296Z"
+      "last_downloaded_episode": "S03E10",
+      "last_download_time": "2026-09-13T18:17:12.446504+03:00"
+    },
+    {
+      "title": "HELL MODE: The Hardcore Gamer Dominates in Another World with Garbage Balancing",
+      "normalized_title": "hellmodethehardcoregamerdominatesinanotherworldwithgarbagebalancing",
+      "preference": "dub",
+      "last_downloaded_episode": "S02E06",
+      "last_download_time": "2026-09-09T20:20:03.437386+03:00"
+    },
+    {
+      "title": "Re: ZERO, Starting Life in Another World",
+      "normalized_title": "rezerostartinglifeinanotherworld",
+      "preference": "dub",
+      "last_downloaded_episode": "S04E14",
+      "last_download_time": "2026-09-09T17:20:01.217241+03:00"
+    },
+    {
+      "title": "Saga of Tanya the Evil",
+      "normalized_title": "sagaoftanyatheevil",
+      "preference": "dub",
+      "last_downloaded_episode": "S02E01",
+      "last_download_time": "2026-09-09T16:48:29.103854+03:00"
     }
   ],
-  "discovered_shows": []
+  "discovered_shows": [
+    {
+      "title": "The Angel Next Door Spoils Me Rotten",
+      "normalized_title": "theangelnextdoorspoilsmerotten",
+      "first_seen": "2026-08-06T14:38:32.311578+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Banana Fish",
+      "normalized_title": "bananafish",
+      "first_seen": "2026-08-08T09:25:17.980160+00:00",
+      "first_seen_type": "season_batch"
+    },
+    {
+      "title": "There was a Cute Girl in the Heros Party so I Tried Confessing to Her",
+      "normalized_title": "therewasacutegirlintheherospartysoitriedconfessingtoher",
+      "first_seen": "2026-08-16T13:44:07.878798+00:00",
+      "first_seen_type": "season_batch"
+    },
+    {
+      "title": "The Forsaken Saintess and Her Foodie Roadtrip in Another World",
+      "normalized_title": "theforsakensaintessandherfoodieroadtripinanotherworld",
+      "first_seen": "2026-08-19T17:28:51.867270+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "The Elusive Samurai",
+      "normalized_title": "theelusivesamurai",
+      "first_seen": "2026-08-21T16:20:07.398075+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Monsters 103 Mercies Dragon Damnation (2024) REPACK 1080p NF WEB-DL DUAL DDP2.0 H.264 (MONSTERS: Ippaku Sanjou Hiryuu Jigoku, Dual-Audio, Multi-Subs)",
+      "normalized_title": "monsters103merciesdragondamnation2024repack1080pnfwebdldualddp20h264monstersippakusanjouhiryuujigokudualaudiomultisubs",
+      "first_seen": "2026-08-25T09:00:10.930245+00:00",
+      "first_seen_type": "movie"
+    },
+    {
+      "title": "MAO",
+      "normalized_title": "mao",
+      "first_seen": "2026-08-25T09:00:12.967692+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Go For It Nakamura-kun",
+      "normalized_title": "goforitnakamurakun",
+      "first_seen": "2026-08-25T09:00:13.210827+00:00",
+      "first_seen_type": "season_batch"
+    },
+    {
+      "title": "Gintama Yoshiwara in Flames (2026) 1080p NF WEB-DL DUAL DDP5.1 H.264 (Shin Gintama Movie: Yoshiwara Daienjou, Dual-Audio, English-Sub)",
+      "normalized_title": "gintamayoshiwarainflames20261080pnfwebdldualddp51h264shingintamamovieyoshiwaradaienjoudualaudioenglishsub",
+      "first_seen": "2026-08-26T15:46:02.136693+00:00",
+      "first_seen_type": "movie"
+    },
+    {
+      "title": "The World Is Dancing",
+      "normalized_title": "theworldisdancing",
+      "first_seen": "2026-08-26T17:16:06.304290+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "LINK CLICK",
+      "normalized_title": "linkclick",
+      "first_seen": "2026-08-28T10:57:21.546805+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Mobile Suit Gundam Hathaway The Sorcery of Nymph Circe (2026) 1080p NF WEB-DL DUAL DDP5.1 H.264 (Kidou Senshi Gundam: Senkou no Hathaway - Circe no Majo, Dual-Audio, Multi-Subs)",
+      "normalized_title": "mobilesuitgundamhathawaythesorceryofnymphcirce20261080pnfwebdldualddp51h264kidousenshigundamsenkounohathawaycircenomajodualaudiomultisubs",
+      "first_seen": "2026-08-30T15:40:38.982518+00:00",
+      "first_seen_type": "movie"
+    },
+    {
+      "title": "Four Hands Two Sonatas",
+      "normalized_title": "fourhandstwosonatas",
+      "first_seen": "2026-08-30T21:07:18.458822+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Does It Count If You Lose Your Innocence to an Android",
+      "normalized_title": "doesitcountifyouloseyourinnocencetoanandroid",
+      "first_seen": "2026-09-07T21:30:00.997524+00:00",
+      "first_seen_type": "season_batch"
+    },
+    {
+      "title": "Saga of Tanya the Evil",
+      "normalized_title": "sagaoftanyatheevil",
+      "first_seen": "2026-09-09T13:46:15.397071+00:00",
+      "first_seen_type": "first_episode"
+    },
+    {
+      "title": "Marikas Love Meter Malfunction",
+      "normalized_title": "marikaslovemetermalfunction",
+      "first_seen": "2026-09-10T18:04:20.703892+00:00",
+      "first_seen_type": "first_episode"
+    }
+  ]
 }

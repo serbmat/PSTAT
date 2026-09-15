@@ -193,11 +193,31 @@ async def cmd_discovered(message: Message):
         return
 
     lines = ["<b>Discovered dubbed shows</b>"]
-    for title in discovered:
-        lines.append(f"• {title}")
+
+    for show in discovered:
+        title = show.get("title", "Unknown")
+        normalized = show.get("normalized_title", "")
+        first_seen = show.get("first_seen")
+        first_seen_type = show.get("first_seen_type", "unknown")
+
+        dt = parse_iso_datetime(first_seen)
+        if dt:
+            date_str = dt.strftime("%d.%m.%Y")
+        else:
+            date_str = "unknown date"
+
+        type_label_map = {
+            "first_episode": "first episode",
+            "season_batch": "season batch",
+            "movie": "movie",
+        }
+        type_label = type_label_map.get(first_seen_type, first_seen_type)
+
+        lines.append(
+            f"• <b>{title}</b> ({type_label}) — discovered {date_str}"
+        )
 
     await message.answer("\n".join(lines), reply_markup=MAIN_MENU_KEYBOARD)
-
 
 @router.message(Command("manage"))
 @router.message(F.text == "🛠 Manage List")

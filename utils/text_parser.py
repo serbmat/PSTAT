@@ -9,7 +9,7 @@ VARYG_SUFFIX_RE = re.compile(r'-\s*(VARYG)\b', re.IGNORECASE)
 
 _HASHTAG_RE = re.compile(r'(?<!\w)#([^\s#]+)')
 _TG_MESSAGE_LINK_RE = re.compile(
-    r'Онлайн\s+в\s+телеграм(?:і|i)?\s*:\s*.*?(https?://t\.me/[A-Za-z0-9_]+/\d+)',
+    r'Онлайн\s+в\s+телеграм(?:і|i)?\s*:\s*.*?(?:https?://)?(t\.me/[A-Za-z0-9_]+/\d+)',
     re.IGNORECASE | re.MULTILINE,
 )
 _EPISODE_RE = re.compile(
@@ -18,8 +18,8 @@ _EPISODE_RE = re.compile(
 )
 _UKRAINIAN_TITLE_RE = re.compile(r'^\s*(.*?)\s*\[', re.DOTALL)
 
-_MVO_TAG = "Робота_Голосом_MVO"
-_SUB_TAG = "Робота_Голосом_SUB"
+_MVO_TAG = "Рідний_Голос_MVO"
+_SUB_TAG = "Рідний_Голос_SUB"
 
 
 def normalize_title(title: str) -> str:
@@ -105,6 +105,52 @@ def parse_release(release_title: str) -> dict | None:
         "is_dub": is_dub_release(release_title),
         "is_multi_sub": is_multi_sub_release(release_title),
     }
+
+# ----------------rss
+
+SXXE01_PATTERN = re.compile(r"\bS\d{2}E01\b", re.IGNORECASE)
+SXX_ONLY_PATTERN = re.compile(r"\bS\d{2}(?!E\d)\b", re.IGNORECASE)
+MOVIE_KEYWORD_PATTERN = re.compile(r"\bmovie\b", re.IGNORECASE)
+YEAR_PATTERN = re.compile(r"\(\d{4}\)")
+
+
+def is_first_episode_release(title: str) -> bool:
+    return bool(SXXE01_PATTERN.search(title or ""))
+
+
+def is_season_batch_release(title: str) -> bool:
+    return bool(SXX_ONLY_PATTERN.search(title or ""))
+
+
+def is_movie_release(title: str) -> bool:
+    # Explicit "Movie" keyword
+    if MOVIE_KEYWORD_PATTERN.search(title or ""):
+        return True
+
+    # Year-based heuristic: (YYYY) present and no season marker Sxx
+    if YEAR_PATTERN.search(title or ""):
+        if not SXX_ONLY_PATTERN.search(title):
+            return True
+
+    return False
+
+
+def is_new_dub_candidate(title: str) -> bool:
+    return (
+        is_first_episode_release(title)
+        or is_season_batch_release(title)
+        or is_movie_release(title)
+    )
+
+
+def classify_release(title: str) -> Optional[str]:
+    if is_first_episode_release(title):
+        return "first_episode"
+    if is_season_batch_release(title):
+        return "season_batch"
+    if is_movie_release(title):
+        return "movie"
+    return None
 
 
 # ---------------- tg

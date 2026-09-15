@@ -1,3 +1,4 @@
+import logging
 from datetime import timezone
 
 from telethon import events
@@ -10,6 +11,8 @@ from utils.text_parser import (
     extract_telegram_message_link,
     has_mvo_release_tag,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ReleaseMonitor:
@@ -35,21 +38,31 @@ class ReleaseMonitor:
 
     async def start(self) -> None:
         if self._started:
+            logger.warning("[RELEASE MONITOR] start() called but already started")
             return
 
         await self.user_client.start()
 
         async def _handler(event):
-            await self._handle_message(event)
+            try:
+                await self._handle_message(event)
+            except Exception:
+                logger.exception("[RELEASE MONITOR] error in _handle_message")
 
         self._handler = _handler
+
+        logger.info(
+            "[RELEASE MONITOR] registering NewMessage handler for chats=%s",
+            self.source_channel,
+        )
+
         self.client.add_event_handler(
             self._handler,
             events.NewMessage(chats=self.source_channel),
         )
 
         self._started = True
-        print(f"[RELEASE MONITOR] listening to {self.source_channel}")
+        logger.info("[RELEASE MONITOR] listening to %s", self.source_channel)
 
     async def stop(self) -> None:
         if not self._started:
@@ -60,39 +73,72 @@ class ReleaseMonitor:
             self._handler = None
 
         self._started = False
-        print("[RELEASE MONITOR] stopped")
+        logger.info("[RELEASE MONITOR] stopped")
 
     async def _handle_message(self, event) -> None:
-        text = event.raw_text or ""
+        # Basic debug info for every message that reaches this handler
+        chat_id = getattr(event.chat, "id", None)
+        msg_id = event.message.id
+        text = event.text or ""
+
+        logger.info(
+            "[RELEASE MONITOR] NEW MESSAGE IN CHANNEL: "
+            "chat_id=%s, message_id=%s, text_preview=%s",
+            chat_id,
+            msg_id,
+            (text[:80].replace("\n", " ") if text else "(empty)"),
+        )
+
         if not text:
+            logger.info(
+                "[RELEASE MONITOR] SKIP: message has no text, message_id=%s",
+                msg_id,
+            )
             return
 
         if not has_mvo_release_tag(text):
+            logger.info(
+                "[RELEASE MONITOR] SKIP: no MVO tag, message_id=%s, text_preview=%s",
+                msg_id,
+                text[:80].replace("\n", " "),
+            )
             return
 
         normalized_title = extract_normalized_show_title(text)
         romaji_title = extract_show_romaji_name(text)
 
-        print(f"text={text}, \nnormalized title={normalized_title}")
+        logger.info(
+            "[RELEASE MONITOR] MVO post detected: "
+            "normalized_title=%s, romaji_title=%s, message_id=%s",
+            normalized_title,
+            romaji_title,
+            msg_id,
+        )
 
         if not normalized_title:
-            print(f"[RELEASE MONITOR] MVO post without show tag, message_id={event.id}")
+            logger.info(
+                "[RELEASE MONITOR] SKIP: MVO post without show tag, message_id=%s",
+                msg_id,
+            )
             return
 
         show = self.db.find_show_by_normalized_title(normalized_title)
         if not show:
-            print(
-                f"[RELEASE MONITOR] no DB match for '{normalized_title}', "
-                f"message_id={event.id}"
+            logger.info(
+                "[RELEASE MONITOR] SKIP: no DB match for '%s', message_id=%s",
+                normalized_title,
+                msg_id,
             )
             return
 
         preference = (show.get("preference") or "").strip().lower()
         if preference != "mvo":
-            print(
-                f"[RELEASE MONITOR] DB match for '{normalized_title}' ignored, "
-                f"preference is '{show.get('preference')}', expected 'mvo', "
-                f"message_id={event.id}"
+            logger.info(
+                "[RELEASE MONITOR] SKIP: DB match for '%s' ignored, "
+                "preference is '%s', expected 'mvo', message_id=%s",
+                normalized_title,
+                preference,
+                msg_id,
             )
             return
 
@@ -121,16 +167,24 @@ class ReleaseMonitor:
                 download_time=message_time,
             )
 
-        print(
+        logger.info(
             "[RELEASE MONITOR] MATCH\n"
-            f"  show: {show_title}\n"
-            f"  normalized_title: {normalized_title}\n"
-            f"  romaji_title: {download_name}\n"
-            f"  episode: {episode_code or 'unknown'}\n"
-            f"  post_time: {message_time or 'unknown'}\n"
-            f"  link: {tg_link or 'not found'}\n"
-            f"  source_message_id: {event.id}\n"
-            f"  db_updated: {updated}"
+            "  show: %s\n"
+            "  normalized_title: %s\n"
+            "  romaji_title: %s\n"
+            "  episode: %s\n"
+            "  post_time: %s\n"
+            "  link: %s\n"
+            "  source_message_id: %s\n"
+            "  db_updated: %s",
+            show_title,
+            normalized_title,
+            download_name,
+            episode_code or "unknown",
+            message_time or "unknown",
+            tg_link or "not found",
+            msg_id,
+            updated,
         )
 
         status_message = await self._notify_match(show_title, episode_code)
@@ -162,7 +216,7 @@ class ReleaseMonitor:
                 text=text,
             )
         except Exception as e:
-            print(f"[RELEASE MONITOR] failed to send bot notification: {e}")
+            logger.exception("[RELEASE MONITOR] failed to send bot notification: %s", e)
             return None
 
     async def _try_download(
@@ -202,7 +256,7 @@ class ReleaseMonitor:
                     f"{show_title} - {episode_code or 'Unknown'} - Download Failed"
                 )
         except Exception as e:
-            print(f"[RELEASE MONITOR] download failed: {e}")
+            logger.exception("[RELEASE MONITOR] download failed: %s", e)
             final_text = (
                 "Release matched\n"
                 f"{show_title} - {episode_code or 'Unknown'} - Download Failed"
@@ -217,7 +271,7 @@ class ReleaseMonitor:
                 )
                 return
             except Exception as e:
-                print(f"[RELEASE MONITOR] failed to edit status message: {e}")
+                logger.exception("[RELEASE MONITOR] failed to edit status message: %s", e)
 
         if self.notify_chat_id and final_text:
             try:
@@ -226,4 +280,4 @@ class ReleaseMonitor:
                     text=final_text,
                 )
             except Exception as e:
-                print(f"[RELEASE MONITOR] failed to send fallback status message: {e}")
+                logger.exception("[RELEASE MONITOR] failed to send fallback status message: %s", e)
