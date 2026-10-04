@@ -1,9 +1,12 @@
-import json
+import logging
 from datetime import datetime, timezone
 
 from aiohttp import web
 
+from core.event_reporter import emit
 from services.sonarr_api import sonarr
+
+logger = logging.getLogger(__name__)
 
 
 def normalize_title(title: str) -> str:
@@ -87,10 +90,16 @@ async def sonarr_webhook_handler(request: web.Request) -> web.Response:
         payload = await request.json()
         event_type = payload.get("eventType")
 
-        print(f"[SONARR WEBHOOK] eventType={event_type}")
-        # print(json.dumps(payload, ensure_ascii=False, indent=2))
+        logger.info("[SONARR WEBHOOK] eventType=%s", event_type)
 
         if event_type != "Download":
+            emit(
+                category="sonarr",
+                event="sonarr_ignored",
+                message=f"Ignored Sonarr eventType={event_type}",
+                source=__name__,
+                data={"event_type": event_type},
+            )
             return web.json_response({
                 "status": "ignored",
                 "reason": f"eventType '{event_type}' is not handled"
@@ -154,17 +163,49 @@ async def sonarr_webhook_handler(request: web.Request) -> web.Response:
                 download_time=download_time
             )
 
-        print(
-            f"[SONARR WEBHOOK] updated={updated} created={created} "
-            f"title={series_title} normalized={normalized_title} episode={episode_code}"
+        logger.info(
+            "[SONARR WEBHOOK] updated=%s created=%s title=%s normalized=%s episode=%s",
+            updated,
+            created,
+            series_title,
+            normalized_title,
+            episode_code,
+        )
+        emit(
+            category="sonarr",
+            event="sonarr_import",
+            message=f"Sonarr download {series_title} {episode_code}",
+            source=__name__,
+            data={
+                "title": series_title,
+                "normalized_title": normalized_title,
+                "episode": episode_code,
+                "updated": updated,
+                "created": created,
+            },
         )
 
         if episode_id:
             try:
                 await sonarr.unmonitor_episode(episode_id)
-                print(f"[SONARR WEBHOOK] Successfully unmonitored episode {episode_id} in Sonarr.")
+                logger.info(
+                    "[SONARR WEBHOOK] Successfully unmonitored episode %s in Sonarr.",
+                    episode_id,
+                )
             except Exception as e:
-                print(f"[SONARR WEBHOOK] Failed to unmonitor episode {episode_id}: {e}")
+                logger.info(
+                    "[SONARR WEBHOOK] Failed to unmonitor episode %s: %s",
+                    episode_id,
+                    e,
+                )
+                emit(
+                    category="sonarr",
+                    event="sonarr_error",
+                    message=f"Failed to unmonitor episode {episode_id}: {e}",
+                    level="error",
+                    source=__name__,
+                    data={"episode_id": episode_id},
+                )
 
         return web.json_response({
             "status": "success",
@@ -178,7 +219,14 @@ async def sonarr_webhook_handler(request: web.Request) -> web.Response:
         })
 
     except Exception as e:
-        print(f"[SONARR WEBHOOK] error: {e}")
+        logger.exception("[SONARR WEBHOOK] error: %s", e)
+        emit(
+            category="sonarr",
+            event="sonarr_error",
+            message=f"Sonarr webhook error: {e}",
+            level="error",
+            source=__name__,
+        )
         return web.json_response({
             "status": "error",
             "message": str(e)

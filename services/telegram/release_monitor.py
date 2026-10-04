@@ -4,6 +4,7 @@ from datetime import timezone
 from telethon import events
 
 from services.telegram.downloader import TelegramDownloader
+from core.event_reporter import emit
 from utils.text_parser import (
     extract_episode_code,
     extract_normalized_show_title,
@@ -63,6 +64,13 @@ class ReleaseMonitor:
 
         self._started = True
         logger.info("[RELEASE MONITOR] listening to %s", self.source_channel)
+        emit(
+            category="release_monitor",
+            event="service_started",
+            message=f"Release monitor listening to {self.source_channel}",
+            source=__name__,
+            data={"source_channel": list(self.source_channel) if not isinstance(self.source_channel, str) else [self.source_channel]},
+        )
 
     async def stop(self) -> None:
         if not self._started:
@@ -74,6 +82,12 @@ class ReleaseMonitor:
 
         self._started = False
         logger.info("[RELEASE MONITOR] stopped")
+        emit(
+            category="release_monitor",
+            event="service_stopped",
+            message="Release monitor stopped",
+            source=__name__,
+        )
 
     async def _handle_message(self, event) -> None:
         # Basic debug info for every message that reaches this handler
@@ -94,6 +108,13 @@ class ReleaseMonitor:
                 "[RELEASE MONITOR] SKIP: message has no text, message_id=%s",
                 msg_id,
             )
+            emit(
+                category="release_monitor",
+                event="skip",
+                message=f"Skip: message has no text, message_id={msg_id}",
+                source=__name__,
+                data={"skip_reason": "no_text", "message_id": msg_id, "chat_id": chat_id},
+            )
             return
 
         if not has_mvo_release_tag(text):
@@ -101,6 +122,18 @@ class ReleaseMonitor:
                 "[RELEASE MONITOR] SKIP: no MVO tag, message_id=%s, text_preview=%s",
                 msg_id,
                 text[:80].replace("\n", " "),
+            )
+            emit(
+                category="release_monitor",
+                event="skip",
+                message=f"Skip: no MVO tag, message_id={msg_id}",
+                source=__name__,
+                data={
+                    "skip_reason": "no_mvo_tag",
+                    "message_id": msg_id,
+                    "chat_id": chat_id,
+                    "text_preview": text[:80].replace("\n", " "),
+                },
             )
             return
 
@@ -120,6 +153,13 @@ class ReleaseMonitor:
                 "[RELEASE MONITOR] SKIP: MVO post without show tag, message_id=%s",
                 msg_id,
             )
+            emit(
+                category="release_monitor",
+                event="skip",
+                message=f"Skip: MVO post without show tag, message_id={msg_id}",
+                source=__name__,
+                data={"skip_reason": "no_show_tag", "message_id": msg_id},
+            )
             return
 
         show = self.db.find_show_by_normalized_title(normalized_title)
@@ -128,6 +168,18 @@ class ReleaseMonitor:
                 "[RELEASE MONITOR] SKIP: no DB match for '%s', message_id=%s",
                 normalized_title,
                 msg_id,
+            )
+            emit(
+                category="release_monitor",
+                event="skip",
+                message=f"Skip: no DB match for '{normalized_title}'",
+                source=__name__,
+                data={
+                    "skip_reason": "no_db_match",
+                    "normalized_title": normalized_title,
+                    "romaji_title": romaji_title,
+                    "message_id": msg_id,
+                },
             )
             return
 
@@ -140,9 +192,21 @@ class ReleaseMonitor:
                 preference,
                 msg_id,
             )
+            emit(
+                category="release_monitor",
+                event="skip",
+                message=f"Skip: wrong preference '{preference}' for '{normalized_title}'",
+                source=__name__,
+                data={
+                    "skip_reason": "wrong_preference",
+                    "normalized_title": normalized_title,
+                    "preference": preference,
+                    "message_id": msg_id,
+                },
+            )
             return
 
-        episode_code = extract_episode_code(text)
+        episode_code = extract_episode_code(text, normalized_title)
         tg_link = extract_telegram_message_link(text)
         if tg_link:
             tg_link = tg_link.replace("https://https://", "https://")
@@ -176,7 +240,7 @@ class ReleaseMonitor:
             "  post_time: %s\n"
             "  link: %s\n"
             "  source_message_id: %s\n"
-            "  db_updated: %s",
+            "              db_updated: %s",
             show_title,
             normalized_title,
             download_name,
@@ -185,6 +249,22 @@ class ReleaseMonitor:
             tg_link or "not found",
             msg_id,
             updated,
+        )
+        emit(
+            category="release_monitor",
+            event="match",
+            message=f"Matched {show_title} {episode_code or 'unknown'}",
+            source=__name__,
+            data={
+                "show": show_title,
+                "normalized_title": normalized_title,
+                "romaji_title": download_name,
+                "episode": episode_code,
+                "post_time": message_time,
+                "link": tg_link,
+                "source_message_id": msg_id,
+                "db_updated": updated,
+            },
         )
 
         status_message = await self._notify_match(show_title, episode_code)
@@ -217,6 +297,13 @@ class ReleaseMonitor:
             )
         except Exception as e:
             logger.exception("[RELEASE MONITOR] failed to send bot notification: %s", e)
+            emit(
+                category="bot",
+                event="notify_failed",
+                message=f"Failed to send match notification: {e}",
+                level="error",
+                source=__name__,
+            )
             return None
 
     async def _try_download(
@@ -257,6 +344,14 @@ class ReleaseMonitor:
                 )
         except Exception as e:
             logger.exception("[RELEASE MONITOR] download failed: %s", e)
+            emit(
+                category="download",
+                event="download_failed",
+                message=f"Download failed for {show_title}: {e}",
+                level="error",
+                source=__name__,
+                data={"show": show_title, "episode": episode_code, "link": tg_link},
+            )
             final_text = (
                 "Release matched\n"
                 f"{show_title} - {episode_code or 'Unknown'} - Download Failed"
@@ -272,6 +367,13 @@ class ReleaseMonitor:
                 return
             except Exception as e:
                 logger.exception("[RELEASE MONITOR] failed to edit status message: %s", e)
+                emit(
+                    category="bot",
+                    event="notify_failed",
+                    message=f"Failed to edit status message: {e}",
+                    level="error",
+                    source=__name__,
+                )
 
         if self.notify_chat_id and final_text:
             try:
@@ -281,3 +383,10 @@ class ReleaseMonitor:
                 )
             except Exception as e:
                 logger.exception("[RELEASE MONITOR] failed to send fallback status message: %s", e)
+                emit(
+                    category="bot",
+                    event="notify_failed",
+                    message=f"Failed to send fallback status message: {e}",
+                    level="error",
+                    source=__name__,
+                )

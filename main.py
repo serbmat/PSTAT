@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from pathlib import Path
 
 from aiohttp import web
 from dotenv import load_dotenv
@@ -10,6 +11,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from handlers.forwarded_messages import router as forwarded_messages_router
+from core.event_reporter import emit, start_reporter_from_env, stop_reporter
 from core.json_db import JsonDB
 from handlers.webhook import sonarr_webhook_handler
 from handlers.commands import router as commands_router
@@ -17,13 +19,13 @@ from handlers.callbacks import router as callbacks_router
 from services.telegram.user_client import TelegramUserClient
 from services.telegram.release_monitor import ReleaseMonitor
 from services.dub_detector import DubDetector
-from pathlib import Path
 
-# Configure logging once at startup
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -37,7 +39,6 @@ DUB_DETECTOR_INTERVAL = int(os.getenv("DUB_DETECTOR_INTERVAL", "900"))
 NYAA_RSS_URL = "https://nyaa.si/?page=rss&c=0_0&q=%5BToonsHub%5D+dual"
 STATE_PATH = Path("data/dub_detector_state.json")
 
-# RELEASE_SOURCE_CHANNEL = os.getenv("RELEASE_SOURCE_CHANNEL", "@robotaholosom")
 RELEASE_SOURCE_CHANNEL = [
     "@ridnyiholos",
     "@Shrbq",
@@ -74,10 +75,24 @@ async def start_release_monitor(app: web.Application) -> None:
 
         app["tg_user_client"] = user_client
         app["release_monitor"] = release_monitor
-        print(f"Release monitor started for {RELEASE_SOURCE_CHANNEL}")
+        logger.info("Release monitor started for %s", RELEASE_SOURCE_CHANNEL)
+        emit(
+            category="system",
+            event="service_started",
+            message=f"Release monitor started for {RELEASE_SOURCE_CHANNEL}",
+            source=__name__,
+            data={"source_channel": RELEASE_SOURCE_CHANNEL},
+        )
 
     except Exception as e:
-        print(f"Failed to start release monitor: {e}")
+        logger.exception("Failed to start release monitor: %s", e)
+        emit(
+            category="system",
+            event="service_failed",
+            message=f"Failed to start release monitor: {e}",
+            level="error",
+            source=__name__,
+        )
         app["tg_user_client"] = None
         app["release_monitor"] = None
 
@@ -103,7 +118,14 @@ async def dub_detector_loop(app: web.Application) -> None:
         except asyncio.CancelledError:
             raise
         except Exception as e:
-            print(f"Dub detector check failed: {e}")
+            logger.exception("Dub detector check failed: %s", e)
+            emit(
+                category="dub_detector",
+                event="feed_error",
+                message=f"Dub detector check failed: {e}",
+                level="error",
+                source=__name__,
+            )
 
         await asyncio.sleep(interval)
 
@@ -120,9 +142,23 @@ async def start_dub_detector(app: web.Application) -> None:
         app["dub_detector"] = detector
         app["dub_detector_interval"] = DUB_DETECTOR_INTERVAL
         app["dub_detector_task"] = asyncio.create_task(dub_detector_loop(app))
-        print(f"Dub detector started with interval {DUB_DETECTOR_INTERVAL}s")
+        logger.info("Dub detector started with interval %ss", DUB_DETECTOR_INTERVAL)
+        emit(
+            category="dub_detector",
+            event="service_started",
+            message=f"Dub detector started with interval {DUB_DETECTOR_INTERVAL}s",
+            source=__name__,
+            data={"interval": DUB_DETECTOR_INTERVAL},
+        )
     except Exception as e:
-        print(f"Failed to start dub detector: {e}")
+        logger.exception("Failed to start dub detector: %s", e)
+        emit(
+            category="dub_detector",
+            event="service_failed",
+            message=f"Failed to start dub detector: {e}",
+            level="error",
+            source=__name__,
+        )
         app["dub_detector"] = None
         app["dub_detector_task"] = None
 
@@ -156,24 +192,45 @@ async def start_web_server() -> web.AppRunner:
     site = web.TCPSite(runner, WEBHOOK_HOST, WEBHOOK_PORT)
     await site.start()
 
-    print(f"Webhook server started: http://{WEBHOOK_HOST}:{WEBHOOK_PORT}{SONARR_WEBHOOK_PATH}")
+    webhook_url = f"http://{WEBHOOK_HOST}:{WEBHOOK_PORT}{SONARR_WEBHOOK_PATH}"
+    logger.info("Webhook server started: %s", webhook_url)
+    emit(
+        category="system",
+        event="service_started",
+        message=f"Webhook server started: {webhook_url}",
+        source=__name__,
+    )
     return runner
 
 
 async def main():
     db.ensure_exists()
+    await start_reporter_from_env()
     runner = await start_web_server()
 
     try:
-        print("Starting Telegram bot polling...")
+        logger.info("Starting Telegram bot polling...")
+        emit(
+            category="bot",
+            event="service_started",
+            message="Starting Telegram bot polling",
+            source=__name__,
+        )
         await dp.start_polling(bot)
     finally:
         await runner.cleanup()
         await bot.session.close()
+        emit(
+            category="system",
+            event="service_stopped",
+            message="Bot stopped",
+            source=__name__,
+        )
+        await stop_reporter()
 
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        print("Bot stopped.")
+        logger.info("Bot stopped.")

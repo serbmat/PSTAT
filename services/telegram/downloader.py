@@ -1,7 +1,12 @@
+import logging
 import re
 import time
 from pathlib import Path
 from typing import Optional
+
+from core.event_reporter import emit
+
+logger = logging.getLogger(__name__)
 
 
 _TG_TOPIC_LINK_RE = re.compile(r"https?://t\.me/([A-Za-z0-9_]+)/(\d+)(?:/(\d+))?")
@@ -93,17 +98,14 @@ class TelegramDownloader:
             total_mb = (total / 1024 / 1024) if total else 0
             percent = (current / total * 100) if total else 0
 
-            print(
-                f"[DOWNLOAD] {label}: "
-                f"{percent:6.2f}% | "
-                f"{current_mb:8.2f}/{total_mb:8.2f} MB | "
-                f"{speed_mb_s:6.2f} MB/s",
-                end="\r",
-                flush=True,
+            logger.debug(
+                "[DOWNLOAD] %s: %.2f%% | %.2f/%.2f MB | %.2f MB/s",
+                label,
+                percent,
+                current_mb,
+                total_mb,
+                speed_mb_s,
             )
-
-            if total and current >= total:
-                print()
 
         return callback
 
@@ -122,17 +124,43 @@ class TelegramDownloader:
         )
 
         label = target_path.name
-        print(f"[DOWNLOAD] starting: {label}")
+        logger.info("[DOWNLOAD] starting: %s", label)
+        emit(
+            category="download",
+            event="download_started",
+            message=f"Download starting: {label}",
+            source=__name__,
+            data={"label": label, "romaji_title": romaji_title, "episode_code": episode_code},
+        )
 
         downloaded_path = await message.download_media(
             file=str(target_path),
             progress_callback=self._make_progress_callback(label),
         )
         if not downloaded_path:
-            print(f"[DOWNLOAD] failed: {label}")
+            logger.info("[DOWNLOAD] failed: %s", label)
+            emit(
+                category="download",
+                event="download_failed",
+                message=f"Download failed: {label}",
+                level="error",
+                source=__name__,
+                data={"label": label, "romaji_title": romaji_title, "episode_code": episode_code},
+            )
             return None
 
-        print(f"[DOWNLOAD] completed: {downloaded_path}")
+        logger.info("[DOWNLOAD] completed: %s", downloaded_path)
+        emit(
+            category="download",
+            event="download_finished",
+            message=f"Download completed: {downloaded_path}",
+            source=__name__,
+            data={
+                "path": str(downloaded_path),
+                "romaji_title": romaji_title,
+                "episode_code": episode_code,
+            },
+        )
         return str(downloaded_path)
 
     async def download_from_link(
@@ -144,10 +172,21 @@ class TelegramDownloader:
     ) -> str | None:
         target_message = await self.get_latest_media_message_in_topic(client, link)
         if not target_message:
-            print(f"[DOWNLOAD] no media message found for link: {link}")
+            logger.info("[DOWNLOAD] no media message found for link: %s", link)
+            emit(
+                category="download",
+                event="download_failed",
+                message=f"No media message found for link: {link}",
+                level="warning",
+                source=__name__,
+                data={"link": link, "romaji_title": romaji_title, "episode_code": episode_code},
+            )
             return None
 
-        print(f"[DOWNLOAD] resolved target message id={getattr(target_message, 'id', None)}")
+        logger.info(
+            "[DOWNLOAD] resolved target message id=%s",
+            getattr(target_message, "id", None),
+        )
 
         return await self.download_from_message(
             message=target_message,

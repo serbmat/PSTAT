@@ -1,7 +1,12 @@
+import logging
 import os
 from pathlib import Path
 
 from telethon import TelegramClient
+
+from core.event_reporter import emit
+
+logger = logging.getLogger(__name__)
 
 
 class TelegramUserClient:
@@ -43,14 +48,26 @@ class TelegramUserClient:
         if not self._started:
             await self.client.start()
             self._started = True
-            print("[TG USER CLIENT] started")
+            logger.info("[TG USER CLIENT] started")
+            emit(
+                category="telegram_client",
+                event="service_started",
+                message="Telegram user client started",
+                source=__name__,
+            )
         return self.client
 
     async def stop(self) -> None:
         if self._started:
             await self.client.disconnect()
             self._started = False
-            print("[TG USER CLIENT] stopped")
+            logger.info("[TG USER CLIENT] stopped")
+            emit(
+                category="telegram_client",
+                event="service_stopped",
+                message="Telegram user client stopped",
+                source=__name__,
+            )
 
     def get_client(self) -> TelegramClient:
         return self.client

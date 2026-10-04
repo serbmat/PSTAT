@@ -16,8 +16,8 @@ _EPISODE_RE = re.compile(
     r'(?:(\d+)\s*сезон\s*)?\[(\d{1,2})\s*з\s*(?:\d+|[XХxх]{1,2})\]',
     re.IGNORECASE,
 )
-_UKRAINIAN_TITLE_RE = re.compile(r'^\s*(.*?)\s*\[', re.DOTALL)
-
+# _UKRAINIAN_TITLE_RE = re.compile(r'^\s*(.*?)\s*\[', re.DOTALL)
+_UKRAINIAN_TITLE_RE = re.compile(r'^\s*(?:\[[^\]]*\]\s*)*([^\[\]]+?)\s*\[')
 _MVO_TAG = "Рідний_Голос_MVO"
 _SUB_TAG = "Рідний_Голос_SUB"
 
@@ -230,7 +230,8 @@ def extract_telegram_message_link(text: str) -> Optional[str]:
     return f"https://{match.group(1)}"
 
 
-def extract_episode_code(text: str) -> Optional[str]:
+
+def extract_episode_code(text: str, normalized_title: str) -> Optional[str]:
     if not text:
         return None
 
@@ -238,7 +239,15 @@ def extract_episode_code(text: str) -> Optional[str]:
     if not match:
         return None
 
-    season = int(match.group(1)) if match.group(1) else 1
+    # Шукаємо сезон у тексті, якщо немає — перевіряємо кінець назви
+    if match.group(1):
+        season = int(match.group(1))
+    elif normalized_title:
+        season_match = re.search(r'\d+$', normalized_title.strip())
+        season = int(season_match.group()) if season_match else 1
+    else:
+        season = 1
+
     episode = int(match.group(2))
 
     return f"S{season:02d}E{episode:02d}"

@@ -1,13 +1,16 @@
 import json
 import logging
+import re
+from urllib.parse import urlparse
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import feedparser
 
 from core.json_db import JsonDB
+from core.event_reporter import emit
 from utils.text_parser import (
     classify_release,
     normalize_title,
@@ -30,7 +33,11 @@ class ReleaseEntry:
     @classmethod
     def from_feed_entry(cls, entry) -> "ReleaseEntry":
         torrent_url = None
-        for link in getattr(entry, "links", []) or []:
+        release_page_url = None
+
+        links = getattr(entry, "links", []) or []
+
+        for link in links:
             href = (
                 getattr(link, "href", None)
                 if not isinstance(link, dict)
@@ -46,28 +53,54 @@ class ReleaseEntry:
                 if not isinstance(link, dict)
                 else link.get("rel")
             )
-            if href and (
+
+            if not href:
+                continue
+
+            is_torrent = (
                 href.endswith(".torrent")
                 or rel == "enclosure"
                 or type_ == "application/x-bittorrent"
-            ):
+            )
+
+            if is_torrent:
                 torrent_url = href
-                break
+                continue
+
+            # Prefer the normal Nyaa HTML release page.
+            if rel == "alternate" or "/view/" in href:
+                release_page_url = href
+
+        # feedparser's top-level link may be either the release page or torrent URL.
+        fallback_link = getattr(entry, "link", "").strip()
+
+        if not release_page_url and fallback_link and not fallback_link.endswith(".torrent"):
+            release_page_url = fallback_link
+
+        # Convert Nyaa torrent download URL:
+        # https://nyaa.si/download/1234567.torrent
+        # into its release page:
+        # https://nyaa.si/view/1234567
+        if not release_page_url and torrent_url:
+            match = re.search(r"nyaa\.si/download/(\d+)\.torrent", torrent_url)
+            if match:
+                release_page_url = f"https://nyaa.si/view/{match.group(1)}"
 
         entry_id = (
             getattr(entry, "id", None)
             or getattr(entry, "guid", None)
-            or getattr(entry, "link", None)
+            or release_page_url
+            or fallback_link
             or getattr(entry, "title", "")
         )
+
         return cls(
             entry_id=str(entry_id),
             title=getattr(entry, "title", "").strip(),
-            link=getattr(entry, "link", "").strip(),
+            link=release_page_url or "",
             published=getattr(entry, "published", "").strip(),
             torrent_url=torrent_url,
         )
-
 
 class DubDetector:
     def __init__(
@@ -168,6 +201,13 @@ class DubDetector:
                 "RSS feed parsed with warnings: %s",
                 getattr(parsed, "bozo_exception", None),
             )
+            emit(
+                category="dub_detector",
+                event="feed_error",
+                message=f"RSS feed parsed with warnings: {getattr(parsed, 'bozo_exception', None)}",
+                level="warning",
+                source=__name__,
+            )
         return [ReleaseEntry.from_feed_entry(entry) for entry in getattr(parsed, "entries", [])]
 
     def load_state(self) -> Optional[Dict[str, str]]:
@@ -225,6 +265,12 @@ class DubDetector:
         entries = self.fetch_feed()
         if not entries:
             LOGGER.info("No RSS entries returned from %s", self.rss_url)
+            emit(
+                category="dub_detector",
+                event="feed_empty",
+                message=f"No RSS entries returned from {self.rss_url}",
+                source=__name__,
+            )
             return []
 
         latest = entries[0]
@@ -268,11 +314,35 @@ class DubDetector:
                     normalized_title,
                     entry.title,
                 )
+                emit(
+                    category="dub_detector",
+                    event="already_tracked",
+                    message=f"Already tracked: {title}",
+                    source=__name__,
+                    data={
+                        "title": title,
+                        "normalized_title": normalized_title,
+                        "rss_title": entry.title,
+                    },
+                )
                 continue
 
             # New show: record and notify
             self._add_discovered_show(title, normalized_title, release_kind)
             await self.notify(entry, release_kind, title)
+            emit(
+                category="dub_detector",
+                event="dub_discovered",
+                message=f"Discovered {release_kind}: {title}",
+                source=__name__,
+                data={
+                    "title": title,
+                    "normalized_title": normalized_title,
+                    "first_seen_type": release_kind,
+                    "rss_title": entry.title,
+                    "link": entry.link,
+                },
+            )
             matched.append(entry)
 
         self.save_state(latest)

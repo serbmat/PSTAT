@@ -52,9 +52,9 @@
     {
       "title": "Незриме кохання під безхмарним нічним небом",
       "normalized_title": "toumeinayorunikakerukimitomenimienaikoiwoshita",
-      "preference": "mvo",
-      "last_downloaded_episode": "S01E11",
-      "last_download_time": "2026-10-04T10:54:09+03:00"
+      "preference": "inari",
+      "last_downloaded_episode": "S01E03",
+      "last_download_time": "2026-07-22T21:30:07.12493Z"
     },
     {
       "title": "Небо на берегах червоної річки",
@@ -139,18 +139,6 @@
       "preference": "dub",
       "last_downloaded_episode": "S01E02",
       "last_download_time": "2026-10-03T19:50:14.879151+03:00"
-    },
-    {
-      "title": "В учнівській раді теж є дірка!",
-      "normalized_title": "seitokainimoanawaaru",
-      "preference": "mvo"
-    },
-    {
-      "title": "Blue Box",
-      "normalized_title": "bluebox",
-      "preference": "dub",
-      "last_downloaded_episode": "S02E01",
-      "last_download_time": "2026-10-04T11:14:33.463513+03:00"
     }
   ],
   "discovered_shows": [
@@ -308,12 +296,6 @@
       "title": "Ranma 1-2 2024",
       "normalized_title": "ranma122024",
       "first_seen": "2026-10-03T17:04:11.544625+00:00",
-      "first_seen_type": "first_episode"
-    },
-    {
-      "title": "Blue Box",
-      "normalized_title": "bluebox",
-      "first_seen": "2026-10-04T08:13:05.229413+00:00",
       "first_seen_type": "first_episode"
     }
   ]

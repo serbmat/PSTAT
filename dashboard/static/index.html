@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SonarrBotTracker dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>SonarrBotTracker</h1>
+      <p class="sub">Local events and logs</p>
+    </div>
+    <div id="connection" class="status down">SSE disconnected</div>
+  </header>
+
+  <section class="highlights" id="highlights"></section>
+
+  <section class="filters">
+    <div class="chips" id="category-chips"></div>
+    <div class="chips" id="level-chips"></div>
+  </section>
+
+  <main id="feed" class="feed"></main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

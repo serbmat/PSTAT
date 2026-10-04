@@ -13,7 +13,8 @@ A small Telegram bot for tracking anime releases, managing a local show list, mo
 
 ## Main pieces
 
-- `main.py` — starts aiogram polling, aiohttp webhook server, and Telethon release monitor.
+- `main.py` — starts aiogram polling, aiohttp webhook server, Telethon release monitor, and the dashboard event reporter.
+- `dashboard/` — separate local web app that stores and displays structured events and logs.
 - `core/json_db.py` — JSON-backed storage for tracked and discovered shows.
 - `handlers/commands.py` — bot commands such as schedule, today, tomorrow, discovered, and manage.
 - `handlers/callbacks.py` — inline button actions for list management and add-show flows.
@@ -55,13 +56,28 @@ Typical `.env` values:
 - `SONARR_WEBHOOK_PATH`
 - `DATABASE_PATH`
 - Telethon user client credentials used by `TelegramUserClient.from_env()`
+- `DASHBOARD_URL` (default `http://127.0.0.1:8090`)
+- `DASHBOARD_TOKEN` (optional shared secret for ingest)
+- `DASHBOARD_ENABLED` (default `true`)
+- `DASHBOARD_HOST` / `DASHBOARD_PORT` (dashboard process, default `0.0.0.0:8090`)
+- `DASHBOARD_EVENTS_PATH` (default `data/dashboard_events.jsonl`)
 
 ## Run
 
-1. Install dependencies.
-2. Create `.env` with bot token, chat ID, webhook settings, DB path, and Telethon credentials.
-3. Start the app with `python main.py`.
-4. Open the bot and use `/manage`, `/schedule`, or forward a release post for manual add.
+Use the project venv interpreter. The bot and the dashboard are two processes:
+
+```text
+.venv/bin/python3 -m dashboard
+.venv/bin/python3 main.py
+```
+
+1. Install dependencies into `.venv`.
+2. Create `.env` with bot token, chat ID, webhook settings, DB path, Telethon credentials, and optional dashboard settings.
+3. Start the dashboard, then start `main.py`.
+4. Open `http://<host>:8090` for the local event dashboard.
+5. Open the bot and use `/manage`, `/schedule`, or forward a release post for manual add.
+
+Console logging stays enabled. The bot also POSTs structured events to the dashboard (`match`, `skip`, `download_*`, `dub_discovered`, Sonarr imports, and log lines by category). Telegram notifications are unchanged.
 
 ## Notes
 
